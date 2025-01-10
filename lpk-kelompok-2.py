@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt  # Menggunakan altair untuk grafik
+import numpy as np
 
 # Judul aplikasi
 st.title("Kalkulator Diet dan Kandungan Energi Makanan")
@@ -109,27 +110,38 @@ st.write(f"BMR (Basal Metabolic Rate): {round(bmr)} kalori/hari")
 st.write(f"TDEE (Total Daily Energy Expenditure): {round(tdee)} kalori/hari")
 st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
 
-# Grafik Bar Chart (menggunakan Altair)
-if st.checkbox("Tampilkan Grafik Bar Chart"):
-    # Data untuk bar chart
-    data_chart = pd.DataFrame({
-        'Komponen': ["Karbohidrat", "Protein", "Lemak"],
-        'Energi (kkal)': [energi_karbo, energi_protein, energi_lemak]
-    })
-    
-    # Membuat bar chart menggunakan Altair
-    chart = alt.Chart(data_chart).mark_bar().encode(
-        x='Komponen',
-        y='Energi (kkal)',
-        color='Komponen',
-        tooltip=['Komponen', 'Energi (kkal)']
-    ).properties(
-        title="Distribusi Energi Makanan"
-    )
-    
-    # Menampilkan chart
-    st.altair_chart(chart, use_container_width=True)
+# Korelasi antara energi makanan yang dikonsumsi dan kalori target
+st.header("Analisis Korelasi Energi Makanan dan Kalori Target")
+korelasi_karbo = np.corrcoef([energi_karbo, kalori_target])[0, 1]
+korelasi_protein = np.corrcoef([energi_protein, kalori_target])[0, 1]
+korelasi_lemak = np.corrcoef([energi_lemak, kalori_target])[0, 1]
+
+st.write(f"Korelasi antara Karbohidrat dan Kalori Target: {korelasi_karbo:.2f}")
+st.write(f"Korelasi antara Protein dan Kalori Target: {korelasi_protein:.2f}")
+st.write(f"Korelasi antara Lemak dan Kalori Target: {korelasi_lemak:.2f}")
+
+# Membuat grafik korelasi
+st.subheader("Grafik Korelasi Energi Makanan dan Kalori Target")
+
+# Membuat DataFrame untuk grafik
+data_korelasi = pd.DataFrame({
+    'Komponen': ['Karbohidrat', 'Protein', 'Lemak'],
+    'Korelasi': [korelasi_karbo, korelasi_protein, korelasi_lemak]
+})
+
+# Membuat bar chart menggunakan Altair
+chart = alt.Chart(data_korelasi).mark_bar().encode(
+    x='Komponen',
+    y='Korelasi',
+    color='Komponen',
+    tooltip=['Komponen', 'Korelasi']
+).properties(
+    title="Korelasi Energi Makanan dan Kalori Target"
+)
+
+# Menampilkan chart
+st.altair_chart(chart, use_container_width=True)
 
 # Footer
 st.write("---")
-st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
+st.caption("Dibuat oleh [kelompok 2 kelas 2G Nanoteknologi Pangan]")
