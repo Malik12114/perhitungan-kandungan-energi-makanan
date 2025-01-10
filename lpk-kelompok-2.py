@@ -13,7 +13,7 @@ Aplikasi ini akan membantu Anda menghitung kebutuhan kalori harian untuk diet, s
 # Input pengguna untuk berat badan, tinggi badan, usia, dan tingkat aktivitas
 st.header("Masukkan Data Pribadi Anda")
 berat_badan = st.number_input("Berat Badan (kg):", min_value=0.0, value=60.0, step=0.1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0.0, value=165.0, step=1.0)  # Ubah min_value ke 0.0 untuk konsistensi tipe data float
+tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0.0, value=165.0, step=1.0)
 usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
 jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
 
@@ -59,12 +59,6 @@ if tujuan_diet == "Menurunkan Berat Badan":
 elif tujuan_diet == "Menambah Massa Otot":
     kalori_target += 500  # Surplus kalori untuk penambahan massa otot (500 kalori surplus)
 
-# Menampilkan hasil
-st.header("Hasil Perhitungan")
-st.write(f"BMR (Basal Metabolic Rate) Anda: {bmr:.2f} kalori/hari")
-st.write(f"TDEE (Total Daily Energy Expenditure): {tdee:.2f} kalori/hari")
-st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {kalori_target:.2f} kalori/hari")
-
 # Input makanan yang dikonsumsi
 st.header("Masukkan Data Berat Makanan Yang Anda Konsumsi")
 karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=0.1)
@@ -81,14 +75,33 @@ def hitung_kalori(karbo, prot, lemak):
 
 energi_karbo, energi_protein, energi_lemak, total_energi = hitung_kalori(karbohidrat, protein, lemak)
 
-# Tampilkan hasil dalam tabel
-st.header("Hasil Perhitungan Energi Makanan")
+# Gabungkan semua hasil perhitungan dalam satu tabel
 data = {
-    "Komponen": ["Karbohidrat", "Protein", "Lemak", "Total"],
-    "Energi (kkal)": [energi_karbo, energi_protein, energi_lemak, total_energi]
+    "Komponen": [
+        "BMR (Basal Metabolic Rate)", 
+        "TDEE (Total Daily Energy Expenditure)", 
+        "Kalori Target (Diet)", 
+        "Karbohidrat", 
+        "Protein", 
+        "Lemak", 
+        "Total Energi Makanan"
+    ],
+    "Hasil Perhitungan (kkal)": [
+        bmr, 
+        tdee, 
+        kalori_target, 
+        energi_karbo, 
+        energi_protein, 
+        energi_lemak, 
+        total_energi
+    ]
 }
+
 df = pd.DataFrame(data)
-st.table(df)
+
+# Menampilkan tabel hasil perhitungan
+st.header("Tabel Hasil Perhitungan")
+st.dataframe(df)  # Tabel interaktif
 
 # Grafik Bar Chart (menggunakan Altair)
 if st.checkbox("Tampilkan Grafik Bar Chart"):
