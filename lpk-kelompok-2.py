@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import altair as alt  # Menggunakan altair untuk grafik
+import altair as alt
 import numpy as np
 
 # Judul aplikasi
@@ -112,13 +112,15 @@ st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {rou
 
 # Korelasi antara energi makanan yang dikonsumsi dan kalori target
 st.header("Analisis Korelasi Energi Makanan dan Kalori Target")
-korelasi_karbo = np.corrcoef([energi_karbo, kalori_target])[0, 1]
-korelasi_protein = np.corrcoef([energi_protein, kalori_target])[0, 1]
-korelasi_lemak = np.corrcoef([energi_lemak, kalori_target])[0, 1]
 
-st.write(f"Korelasi antara Karbohidrat dan Kalori Target: {korelasi_karbo:.2f}")
-st.write(f"Korelasi antara Protein dan Kalori Target: {korelasi_protein:.2f}")
-st.write(f"Korelasi antara Lemak dan Kalori Target: {korelasi_lemak:.2f}")
+# Menggunakan data dalam format yang benar untuk korelasi
+energi = np.array([energi_karbo, energi_protein, energi_lemak])  # Array satu dimensi untuk energi makanan
+kalori = np.array([kalori_target] * 3)  # Mengulang kalori target untuk setiap komponen energi
+
+# Korelasi antara energi makanan dan kalori target
+korelasi = np.corrcoef(energi, kalori)[0, 1]
+
+st.write(f"Korelasi antara Energi Makanan dan Kalori Target: {korelasi:.2f}")
 
 # Membuat grafik korelasi
 st.subheader("Grafik Korelasi Energi Makanan dan Kalori Target")
@@ -126,15 +128,16 @@ st.subheader("Grafik Korelasi Energi Makanan dan Kalori Target")
 # Membuat DataFrame untuk grafik
 data_korelasi = pd.DataFrame({
     'Komponen': ['Karbohidrat', 'Protein', 'Lemak'],
-    'Korelasi': [korelasi_karbo, korelasi_protein, korelasi_lemak]
+    'Energi Makanan (kkal)': [energi_karbo, energi_protein, energi_lemak],
+    'Kalori Target (kkal)': [kalori_target] * 3
 })
 
-# Membuat bar chart menggunakan Altair
-chart = alt.Chart(data_korelasi).mark_bar().encode(
-    x='Komponen',
-    y='Korelasi',
+# Membuat scatter plot menggunakan Altair
+chart = alt.Chart(data_korelasi).mark_point().encode(
+    x='Energi Makanan (kkal)',
+    y='Kalori Target (kkal)',
     color='Komponen',
-    tooltip=['Komponen', 'Korelasi']
+    tooltip=['Komponen', 'Energi Makanan (kkal)', 'Kalori Target (kkal)']
 ).properties(
     title="Korelasi Energi Makanan dan Kalori Target"
 )
@@ -144,4 +147,4 @@ st.altair_chart(chart, use_container_width=True)
 
 # Footer
 st.write("---")
-st.caption("Dibuat oleh [kelompok 2 kelas 2G Nanoteknologi Pangan]")
+st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
