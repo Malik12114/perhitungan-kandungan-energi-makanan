@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt  # Menambahkan import matplotlib
+import altair as alt  # Menggunakan altair untuk grafik
 
 # Judul aplikasi
 st.title("Kalkulator Diet dan Kandungan Energi Makanan")
@@ -89,6 +89,27 @@ data = {
 }
 df = pd.DataFrame(data)
 st.table(df)
+
+# Grafik Bar Chart (menggunakan Altair)
+if st.checkbox("Tampilkan Grafik Bar Chart"):
+    # Data untuk bar chart
+    data_chart = pd.DataFrame({
+        'Komponen': ["Karbohidrat", "Protein", "Lemak"],
+        'Energi (kkal)': [energi_karbo, energi_protein, energi_lemak]
+    })
+    
+    # Membuat bar chart menggunakan Altair
+    chart = alt.Chart(data_chart).mark_bar().encode(
+        x='Komponen',
+        y='Energi (kkal)',
+        color='Komponen',
+        tooltip=['Komponen', 'Energi (kkal)']
+    ).properties(
+        title="Distribusi Energi Makanan"
+    )
+    
+    # Menampilkan chart
+    st.altair_chart(chart, use_container_width=True)
 
 # Footer
 st.write("---")
