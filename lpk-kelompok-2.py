@@ -124,4 +124,12 @@ if st.checkbox("Tampilkan Grafik Bar Chart"):
         color='Komponen',
         tooltip=['Komponen', 'Energi (kkal)']
     ).properties(
-        title="Dist
+        title="Distribusi Energi Makanan"
+    )
+    
+    # Menampilkan chart
+    st.altair_chart(chart, use_container_width=True)
+
+# Footer
+st.write("---")
+st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
