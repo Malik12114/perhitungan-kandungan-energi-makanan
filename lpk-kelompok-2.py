@@ -89,6 +89,20 @@ data = {
 df = pd.DataFrame(data)
 st.table(df)
 
+# Grafik Bar Chart (opsional)
+if st.checkbox("Tampilkan Grafik Bar Chart"):
+    # Data untuk bar chart
+    labels = ["Karbohidrat", "Protein", "Lemak"]
+    values = [energi_karbo, energi_protein, energi_lemak]
+
+    # Plot grafik
+    plt.figure(figsize=(6, 4))
+    plt.bar(labels, values, color=['#FF9999', '#99FF99', '#9999FF'])
+    plt.title("Distribusi Energi Makanan")
+    plt.xlabel("Komponen")
+    plt.ylabel("Energi (kkal)")
+    st.pyplot(plt)
+
 # Footer
 st.write("---")
 st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
