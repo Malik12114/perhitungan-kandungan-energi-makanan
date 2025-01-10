@@ -1,15 +1,14 @@
 import streamlit as st
-import pandas as pd
 
 # Judul aplikasi
-st.title("Kalkulator Diet dan Pembakaran Kalori Harian")
+st.title("Kalkulator Kalori Harian")
 
 # Deskripsi aplikasi
 st.markdown("""
-Aplikasi ini membantu Anda untuk menghitung kalori yang harus dikonsumsi dan dibakar setiap harinya berdasarkan data pribadi, tingkat aktivitas fisik, dan tujuan diet Anda.
+Aplikasi ini membantu Anda menghitung kalori yang harus dikonsumsi dan dibakar setiap harinya berdasarkan data pribadi dan tujuan diet Anda.
 """)
 
-# Input pengguna untuk berat badan, tinggi badan, usia, dan tingkat aktivitas
+# Input pengguna untuk berat badan, tinggi badan, usia, dan jenis kelamin
 st.header("Masukkan Data Pribadi Anda")
 berat_badan = st.number_input("Berat Badan (kg):", min_value=0.0, value=60.0, step=0.1)
 tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0.0, value=165.0, step=1.0)
@@ -17,13 +16,11 @@ usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
 jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
 
 # Pilihan tingkat aktivitas
-st.header("Tingkat Aktivitas Fisik")
 aktivitas = st.selectbox("Pilih tingkat aktivitas fisik:", [
-    "Tidak aktif (sedentari)",
-    "Aktif ringan (olahraga ringan 1-3 hari/minggu)",
-    "Aktif sedang (olahraga sedang 3-5 hari/minggu)",
-    "Aktif berat (olahraga intens 6-7 hari/minggu)",
-    "Sangat aktif (pekerjaan fisik berat atau latihan intensif)"
+    "Tidak aktif",
+    "Aktif ringan",
+    "Aktif sedang",
+    "Aktif berat"
 ])
 
 # Perhitungan BMR dengan rumus Harris-Benedict
@@ -38,80 +35,48 @@ bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
 
 # Faktor aktivitas (TDEE multiplier)
 aktivitas_faktor = {
-    "Tidak aktif (sedentari)": 1.2,
-    "Aktif ringan (olahraga ringan 1-3 hari/minggu)": 1.375,
-    "Aktif sedang (olahraga sedang 3-5 hari/minggu)": 1.55,
-    "Aktif berat (olahraga intens 6-7 hari/minggu)": 1.725,
-    "Sangat aktif (pekerjaan fisik berat atau latihan intensif)": 1.9
+    "Tidak aktif": 1.2,
+    "Aktif ringan": 1.375,
+    "Aktif sedang": 1.55,
+    "Aktif berat": 1.725
 }
 
 tdee = bmr * aktivitas_faktor[aktivitas]
 
 # Pilihan tujuan diet
 st.header("Pilih Tujuan Diet Anda")
-tujuan_diet = st.selectbox("Apa tujuan diet Anda?", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Massa Otot"])
+tujuan_diet = st.selectbox("Tujuan Diet:", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Massa Otot"])
 
-# Menentukan kalori defisit atau surplus
+# Menentukan kalori target
 kalori_target = tdee
 if tujuan_diet == "Menurunkan Berat Badan":
-    kalori_target -= 500  # Defisit kalori untuk penurunan berat badan (500 kalori defisit)
+    kalori_target -= 500  # Defisit kalori
 elif tujuan_diet == "Menambah Massa Otot":
-    kalori_target += 500  # Surplus kalori untuk penambahan massa otot (500 kalori surplus)
+    kalori_target += 500  # Surplus kalori
 
-# Menampilkan hasil perhitungan diet
-st.header("Hasil Perhitungan Diet")
-st.write(f"BMR (Basal Metabolic Rate): {round(bmr)} kalori/hari")
-st.write(f"TDEE (Total Daily Energy Expenditure): {round(tdee)} kalori/hari")
-st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
+# Menampilkan hasil
+st.header("Hasil Perhitungan Kalori")
+st.write(f"BMR: {round(bmr)} kalori/hari")
+st.write(f"TDEE: {round(tdee)} kalori/hari")
+st.write(f"Kalori yang disarankan untuk diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
 
 # Input makanan yang dikonsumsi
-st.header("Masukkan Data Berat Makanan Yang Anda Konsumsi")
+st.header("Masukkan Data Makanan yang Dikonsumsi")
 karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=0.1)
 protein = st.number_input("Protein (gram):", min_value=0.0, value=0.0, step=0.1)
 lemak = st.number_input("Lemak (gram):", min_value=0.0, value=0.0, step=0.1)
 
-# Perhitungan energi makanan yang dikonsumsi
-def hitung_kalori(karbo, prot, lemak):
-    energi_karbo = karbo * 4  # 4 kalori per gram
-    energi_protein = prot * 4  # 4 kalori per gram
-    energi_lemak = lemak * 9  # 9 kalori per gram
-    total_energi = energi_karbo + energi_protein + energi_lemak
-    return energi_karbo, energi_protein, energi_lemak, total_energi
+# Perhitungan kalori dari makanan yang dikonsumsi
+kalori_makanan = karbohidrat * 4 + protein * 4 + lemak * 9
 
-energi_karbo, energi_protein, energi_lemak, total_energi = hitung_kalori(karbohidrat, protein, lemak)
+# Menampilkan hasil perhitungan kalori makanan
+st.header("Kalori yang Dikonsumsi dari Makanan")
+st.write(f"Karbohidrat: {karbohidrat * 4} kalori")
+st.write(f"Protein: {protein * 4} kalori")
+st.write(f"Lemak: {lemak * 9} kalori")
+st.write(f"Total kalori dari makanan: {round(kalori_makanan)} kalori")
 
-# Menampilkan hasil perhitungan energi makanan
-st.header("Hasil Perhitungan Energi Makanan")
-st.write(f"Karbohidrat: {round(energi_karbo)} kalori")
-st.write(f"Protein: {round(energi_protein)} kalori")
-st.write(f"Lemak: {round(energi_lemak)} kalori")
-st.write(f"Total Energi Makanan: {round(total_energi)} kalori")
-
-# Menghitung kalori yang masuk dan kalori yang harus dibakar
-kalori_masuk = total_energi
-kalori_dibakar = tdee
-
-st.header("Perbandingan Kalori Masuk dan Kalori Dibakar")
-st.write(f"Kalori yang masuk (dari makanan yang dikonsumsi): {round(kalori_masuk)} kalori")
-st.write(f"Kalori yang dibakar (TDEE): {round(kalori_dibakar)} kalori")
-
-# Grafik Kalori Masuk vs Kalori Dibakar
-import altair as alt
-
-data = pd.DataFrame({
-    'Jenis': ['Kalori Masuk', 'Kalori Dibakar'],
-    'Kalori': [kalori_masuk, kalori_dibakar]
-})
-
-chart = alt.Chart(data).mark_bar().encode(
-    x='Jenis',
-    y='Kalori'
-).properties(
-    title='Perbandingan Kalori Masuk dan Kalori Dibakar'
-)
-
-st.altair_chart(chart, use_container_width=True)
-
-# Footer
-st.write("---")
-st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
+# Perbandingan kalori
+st.header("Perbandingan Kalori Masuk dan Dibakar")
+st.write(f"Kalori Masuk: {round(kalori_makanan)} kalori")
+st.write(f"Kalori Dibakar (TDEE): {round(tdee)} kalori")
