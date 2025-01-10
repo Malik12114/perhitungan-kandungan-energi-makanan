@@ -35,18 +35,17 @@ df = pd.DataFrame(data)
 st.table(df)
 
 # Grafik Pie Chart (opsional)
-if st.checkbox("Tampilkan Grafik Pie Chart"):
-    import matplotlib.pyplot as plt
-
-    # Data untuk pie chart
+if st.checkbox("Tampilkan Grafik Bar Chart"):
+    # Data untuk bar chart
     labels = ["Karbohidrat", "Protein", "Lemak"]
     values = [energi_karbo, energi_protein, energi_lemak]
-    colors = ["#FF9999", "#99FF99", "#9999FF"]
 
     # Plot grafik
-    plt.figure(figsize=(6, 6))
-    plt.pie(values, labels=labels, autopct="%1.1f%%", colors=colors, startangle=140)
+    plt.figure(figsize=(6, 4))
+    plt.bar(labels, values, color=['#FF9999', '#99FF99', '#9999FF'])
     plt.title("Distribusi Energi Makanan")
+    plt.xlabel("Komponen")
+    plt.ylabel("Energi (kkal)")
     st.pyplot(plt)
 
 # Footer
