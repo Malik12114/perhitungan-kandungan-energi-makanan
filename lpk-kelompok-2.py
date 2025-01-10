@@ -1,79 +1,58 @@
 import streamlit as st
-import pandas as pd
 
 # Judul aplikasi
-st.title("Kalkulator Diet dan Kandungan Energi Makanan")
+st.title("Kalkulator Kalori Harian")
 
-# Deskripsi aplikasi
-st.markdown("""
-Aplikasi ini akan membantu Anda menghitung kebutuhan kalori harian untuk diet, serta kandungan energi dari makanan yang Anda konsumsi.
-""")
-
-# Input pengguna untuk berat badan, tinggi badan, usia, dan tingkat aktivitas
-st.header("Masukkan Data Pribadi Anda")
+# Input pengguna untuk berat badan, tinggi badan, usia, jenis kelamin, dan aktivitas
 berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=60, step=1)
 tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=165, step=1)
 usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
 jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
-
-# Pilihan tingkat aktivitas
-st.header("Tingkat Aktivitas Fisik")
-aktivitas = st.selectbox("Pilih tingkat aktivitas fisik:", [
-    "Tidak aktif (sedentari)",
-    "Aktif ringan (olahraga ringan 1-3 hari/minggu)",
-    "Aktif sedang (olahraga sedang 3-5 hari/minggu)",
-    "Aktif berat (olahraga intens 6-7 hari/minggu)",
-    "Sangat aktif (pekerjaan fisik berat atau latihan intensif)"
+aktivitas = st.selectbox("Tingkat Aktivitas Fisik:", [
+    "Tidak aktif", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"
 ])
 
-# Perhitungan BMR dengan rumus Harris-Benedict
+# Rumus BMR (Basal Metabolic Rate) Harris-Benedict
 def hitung_bmr(berat, tinggi, usia, jenis_kelamin):
     if jenis_kelamin == "Pria":
-        bmr = 66.5 + (13.75 * berat) + (5.003 * tinggi) - (6.75 * usia)
+        return 66.5 + (13.75 * berat) + (5.003 * tinggi) - (6.75 * usia)
     else:
-        bmr =  655.1 + (9.563 * berat) + (1.850 * tinggi) - (4.676 * usia)
-    return bmr
+        return 655.1 + (9.563 * berat) + (1.850 * tinggi) - (4.676 * usia)
 
-bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
-
-# Faktor aktivitas (TDEE multiplier)
+# Faktor aktivitas fisik (TDEE multiplier)
 aktivitas_faktor = {
-    "Tidak aktif (sedentari)": 1.2,
-    "Aktif ringan (olahraga ringan 1-3 hari/minggu)": 1.375,
-    "Aktif sedang (olahraga sedang 3-5 hari/minggu)": 1.55,
-    "Aktif berat (olahraga intens 6-7 hari/minggu)": 1.725,
-    "Sangat aktif (pekerjaan fisik berat atau latihan intensif)": 1.9
+    "Tidak aktif": 1.2,
+    "Aktif ringan": 1.375,
+    "Aktif sedang": 1.55,
+    "Aktif berat": 1.725,
+    "Sangat aktif": 1.9
 }
 
+# Hitung BMR dan TDEE
+bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
 tdee = bmr * aktivitas_faktor[aktivitas]
 
 # Pilihan tujuan diet
-st.header("Pilih Tujuan Diet Anda")
-tujuan_diet = st.selectbox("Apa tujuan diet Anda?", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Massa Otot"])
+tujuan_diet = st.selectbox("Tujuan Diet:", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Massa Otot"])
 
-# Menentukan kalori defisit atau surplus
+# Sesuaikan kalori berdasarkan tujuan diet
 kalori_target = tdee
 if tujuan_diet == "Menurunkan Berat Badan":
-    kalori_target -= 500  # Defisit kalori untuk penurunan berat badan (500 kalori defisit)
+    kalori_target -= 500
 elif tujuan_diet == "Menambah Massa Otot":
-    kalori_target += 500  # Surplus kalori untuk penambahan massa otot (500 kalori surplus)
+    kalori_target += 500
 
 # Menampilkan hasil perhitungan
-st.header("Hasil Perhitungan Kalori")
-st.write(f"BMR (Basal Metabolic Rate) Anda: {int(bmr)} kalori/hari")
+st.subheader("Hasil Perhitungan Kalori")
+st.write(f"BMR (Basal Metabolic Rate): {int(bmr)} kalori/hari")
 st.write(f"TDEE (Total Daily Energy Expenditure): {int(tdee)} kalori/hari")
-st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {int(kalori_target)} kalori/hari")
+st.write(f"Kalori yang disarankan untuk tujuan diet '{tujuan_diet}': {int(kalori_target)} kalori/hari")
 
-# Saran kalori yang harus dibakar
-st.header("Saran Kalori yang Harus Dibakar")
+# Saran kalori yang harus dibakar berdasarkan tujuan diet
+st.subheader("Saran Aktivitas Fisik")
 if tujuan_diet == "Menurunkan Berat Badan":
-    kalori_bakar = tdee - 500  # Defisit kalori
-    st.write(f"Saran kalori yang harus dibakar untuk penurunan berat badan: {int(kalori_bakar)} kalori per hari")
-    st.write("Saran aktivitas: Berolahraga dengan intensitas sedang (seperti berjalan cepat atau jogging) selama 30-60 menit per hari.")
-elif tujuan_diet == "Menjaga Berat Badan":
-    st.write(f"Saran kalori yang harus dibakar untuk menjaga berat badan: {int(tdee)} kalori per hari")
-    st.write("Saran aktivitas: Lakukan aktivitas fisik ringan hingga sedang secara teratur (seperti berjalan cepat atau bersepeda).")
+    st.write(f"Saran kalori yang harus dibakar: {int(tdee - 500)} kalori per hari")
 elif tujuan_diet == "Menambah Massa Otot":
-    kalori_bakar = tdee + 500  # Surplus kalori
-    st.write(f"Saran kalori yang harus dibakar untuk menambah massa otot: {int(kalori_bakar)} kalori per hari")
-    st.write("Saran aktivitas: Fokus pada latihan kekuatan (strength training) dan makan lebih banyak kalori yang sehat.")
+    st.write(f"Saran kalori yang harus dibakar: {int(tdee + 500)} kalori per hari")
+else:
+    st.write(f"Saran kalori yang harus dibakar: {int(tdee)} kalori per hari")
