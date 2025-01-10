@@ -75,7 +75,7 @@ def hitung_kalori(karbo, prot, lemak):
 
 energi_karbo, energi_protein, energi_lemak, total_energi = hitung_kalori(karbohidrat, protein, lemak)
 
-# Gabungkan semua hasil perhitungan dalam satu tabel
+# Gabungkan semua hasil perhitungan dalam satu tabel (bulatkan hasil ke bilangan bulat)
 data = {
     "Komponen": [
         "BMR (Basal Metabolic Rate)", 
@@ -87,21 +87,27 @@ data = {
         "Total Energi Makanan"
     ],
     "Hasil Perhitungan (kkal)": [
-        bmr, 
-        tdee, 
-        kalori_target, 
-        energi_karbo, 
-        energi_protein, 
-        energi_lemak, 
-        total_energi
+        round(bmr), 
+        round(tdee), 
+        round(kalori_target), 
+        round(energi_karbo), 
+        round(energi_protein), 
+        round(energi_lemak), 
+        round(total_energi)
     ]
 }
 
 df = pd.DataFrame(data)
 
-# Menampilkan tabel hasil perhitungan
-st.header("Tabel Hasil Perhitungan")
+# Menampilkan tabel hasil perhitungan diet dan energi makanan
+st.header("Tabel Hasil Perhitungan Diet dan Energi Makanan")
 st.dataframe(df)  # Tabel interaktif
+
+# Data diet untuk ditampilkan di bawah tabel energi makanan
+st.subheader("Tujuan Diet Anda: " + tujuan_diet)
+st.write(f"BMR (Basal Metabolic Rate): {round(bmr)} kalori/hari")
+st.write(f"TDEE (Total Daily Energy Expenditure): {round(tdee)} kalori/hari")
+st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
 
 # Grafik Bar Chart (menggunakan Altair)
 if st.checkbox("Tampilkan Grafik Bar Chart"):
@@ -118,12 +124,4 @@ if st.checkbox("Tampilkan Grafik Bar Chart"):
         color='Komponen',
         tooltip=['Komponen', 'Energi (kkal)']
     ).properties(
-        title="Distribusi Energi Makanan"
-    )
-    
-    # Menampilkan chart
-    st.altair_chart(chart, use_container_width=True)
-
-# Footer
-st.write("---")
-st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
+        title="Dist
