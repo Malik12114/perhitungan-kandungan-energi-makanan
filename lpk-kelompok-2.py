@@ -13,7 +13,7 @@ Aplikasi ini akan membantu Anda menghitung kebutuhan kalori harian untuk diet, s
 # Input pengguna untuk berat badan, tinggi badan, usia, dan tingkat aktivitas
 st.header("Masukkan Data Pribadi Anda")
 berat_badan = st.number_input("Berat Badan (kg):", min_value=0.0, value=60.0, step=0.1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=165.0, step=1)
+tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0.0, value=165.0, step=1.0)  # Ubah min_value ke 0.0 untuk konsistensi tipe data float
 usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
 jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
 
@@ -63,54 +63,4 @@ elif tujuan_diet == "Menambah Massa Otot":
 st.header("Hasil Perhitungan")
 st.write(f"BMR (Basal Metabolic Rate) Anda: {bmr:.2f} kalori/hari")
 st.write(f"TDEE (Total Daily Energy Expenditure): {tdee:.2f} kalori/hari")
-st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {kalori_target:.2f} kalori/hari")
-
-# Input makanan yang dikonsumsi
-st.header("Masukkan Data Berat Makanan Yang Anda Konsumsi")
-karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=0.1)
-protein = st.number_input("Protein (gram):", min_value=0.0, value=0.0, step=0.1)
-lemak = st.number_input("Lemak (gram):", min_value=0.0, value=0.0, step=0.1)
-
-# Perhitungan energi makanan yang dikonsumsi
-def hitung_kalori(karbo, prot, lemak):
-    energi_karbo = karbo * 4  # 4 kalori per gram
-    energi_protein = prot * 4  # 4 kalori per gram
-    energi_lemak = lemak * 9  # 9 kalori per gram
-    total_energi = energi_karbo + energi_protein + energi_lemak
-    return energi_karbo, energi_protein, energi_lemak, total_energi
-
-energi_karbo, energi_protein, energi_lemak, total_energi = hitung_kalori(karbohidrat, protein, lemak)
-
-# Tampilkan hasil dalam tabel
-st.header("Hasil Perhitungan Energi Makanan")
-data = {
-    "Komponen": ["Karbohidrat", "Protein", "Lemak", "Total"],
-    "Energi (kkal)": [energi_karbo, energi_protein, energi_lemak, total_energi]
-}
-df = pd.DataFrame(data)
-st.table(df)
-
-# Grafik Bar Chart (menggunakan Altair)
-if st.checkbox("Tampilkan Grafik Bar Chart"):
-    # Data untuk bar chart
-    data_chart = pd.DataFrame({
-        'Komponen': ["Karbohidrat", "Protein", "Lemak"],
-        'Energi (kkal)': [energi_karbo, energi_protein, energi_lemak]
-    })
-    
-    # Membuat bar chart menggunakan Altair
-    chart = alt.Chart(data_chart).mark_bar().encode(
-        x='Komponen',
-        y='Energi (kkal)',
-        color='Komponen',
-        tooltip=['Komponen', 'Energi (kkal)']
-    ).properties(
-        title="Distribusi Energi Makanan"
-    )
-    
-    # Menampilkan chart
-    st.altair_chart(chart, use_container_width=True)
-
-# Footer
-st.write("---")
-st.caption("Dibuat oleh [kelas 2G Nanoteknologi Pangan]")
+st.write(f"Kalori harian yang disarankan untuk tujua
