@@ -10,8 +10,8 @@ Aplikasi ini membantu Anda menghitung kalori yang harus dikonsumsi dan dibakar s
 
 # Input pengguna untuk berat badan, tinggi badan, usia, dan jenis kelamin
 st.header("Masukkan Data Pribadi Anda")
-berat_badan = st.number_input("Berat Badan (kg):", min_value=0.0, value=60.0, step=0.1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0.0, value=165.0, step=1.0)
+berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=60, step=1)
+tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=165, step=1)
 usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
 jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
 
@@ -62,9 +62,9 @@ st.write(f"Kalori yang disarankan untuk diet '{tujuan_diet}': {int(kalori_target
 
 # Input makanan yang dikonsumsi
 st.header("Masukkan Data Makanan yang Dikonsumsi")
-karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=1)
-protein = st.number_input("Protein (gram):", min_value=0.0, value=0.0, step=1)
-lemak = st.number_input("Lemak (gram):", min_value=0.0, value=0.0, step=1)
+karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0, value=0, step=1)
+protein = st.number_input("Protein (gram):", min_value=0, value=0, step=1)
+lemak = st.number_input("Lemak (gram):", min_value=0, value=0, step=1)
 
 # Perhitungan kalori dari makanan yang dikonsumsi
 kalori_makanan = karbohidrat * 4 + protein * 4 + lemak * 9
