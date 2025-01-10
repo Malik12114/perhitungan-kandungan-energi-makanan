@@ -1,82 +1,17 @@
-import streamlit as st
+# Menampilkan hasil dengan saran kalori yang harus dibakar
+st.header("Saran Kalori yang Harus Dibakar")
 
-# Judul aplikasi
-st.title("Kalkulator Kalori Harian")
-
-# Deskripsi aplikasi
-st.markdown("""
-Aplikasi ini membantu Anda menghitung kalori yang harus dikonsumsi dan dibakar setiap harinya berdasarkan data pribadi dan tujuan diet Anda.
-""")
-
-# Input pengguna untuk berat badan, tinggi badan, usia, dan jenis kelamin
-st.header("Masukkan Data Pribadi Anda")
-berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=60, step=1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=165, step=1)
-usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
-jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
-
-# Pilihan tingkat aktivitas
-aktivitas = st.selectbox("Pilih tingkat aktivitas fisik:", [
-    "Tidak aktif",
-    "Aktif ringan",
-    "Aktif sedang",
-    "Aktif berat"
-])
-
-# Perhitungan BMR dengan rumus Harris-Benedict
-def hitung_bmr(berat, tinggi, usia, jenis_kelamin):
-    if jenis_kelamin == "Pria":
-        bmr = 66.5 + (13.75 * berat) + (5.003 * tinggi) - (6.75 * usia)
-    else:
-        bmr =  655.1 + (9.563 * berat) + (1.850 * tinggi) - (4.676 * usia)
-    return bmr
-
-bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
-
-# Faktor aktivitas (TDEE multiplier)
-aktivitas_faktor = {
-    "Tidak aktif": 1.2,
-    "Aktif ringan": 1.375,
-    "Aktif sedang": 1.55,
-    "Aktif berat": 1.725
-}
-
-tdee = bmr * aktivitas_faktor[aktivitas]
-
-# Pilihan tujuan diet
-st.header("Pilih Tujuan Diet Anda")
-tujuan_diet = st.selectbox("Tujuan Diet:", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Massa Otot"])
-
-# Menentukan kalori target
-kalori_target = tdee
+# Menentukan kalori yang perlu dibakar
 if tujuan_diet == "Menurunkan Berat Badan":
-    kalori_target -= 500  # Defisit kalori
+    kalori_bakar = tdee - 500  # Defisit kalori
+    st.write(f"Saran kalori yang harus dibakar untuk penurunan berat badan: {int(kalori_bakar)} kalori per hari")
+    st.write("Saran aktivitas: Berolahraga dengan intensitas sedang (seperti berjalan cepat atau jogging) selama 30-60 menit per hari.")
+
+elif tujuan_diet == "Menjaga Berat Badan":
+    st.write(f"Saran kalori yang harus dibakar untuk menjaga berat badan: {int(tdee)} kalori per hari")
+    st.write("Saran aktivitas: Lakukan aktivitas fisik ringan hingga sedang secara teratur (seperti berjalan cepat atau bersepeda).")
+
 elif tujuan_diet == "Menambah Massa Otot":
-    kalori_target += 500  # Surplus kalori
-
-# Menampilkan hasil
-st.header("Hasil Perhitungan Kalori")
-st.write(f"BMR: {int(bmr)} kalori/hari")
-st.write(f"TDEE: {int(tdee)} kalori/hari")
-st.write(f"Kalori yang disarankan untuk diet '{tujuan_diet}': {int(kalori_target)} kalori/hari")
-
-# Input makanan yang dikonsumsi
-st.header("Masukkan Data Makanan yang Dikonsumsi")
-karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0, value=0, step=1)
-protein = st.number_input("Protein (gram):", min_value=0, value=0, step=1)
-lemak = st.number_input("Lemak (gram):", min_value=0, value=0, step=1)
-
-# Perhitungan kalori dari makanan yang dikonsumsi
-kalori_makanan = karbohidrat * 4 + protein * 4 + lemak * 9
-
-# Menampilkan hasil perhitungan kalori makanan
-st.header("Kalori yang Dikonsumsi dari Makanan")
-st.write(f"Karbohidrat: {int(karbohidrat * 4)} kalori")
-st.write(f"Protein: {int(protein * 4)} kalori")
-st.write(f"Lemak: {int(lemak * 9)} kalori")
-st.write(f"Total kalori dari makanan: {int(kalori_makanan)} kalori")
-
-# Perbandingan kalori
-st.header("Perbandingan Kalori Masuk dan Dibakar")
-st.write(f"Kalori Masuk: {int(kalori_makanan)} kalori")
-st.write(f"Kalori Dibakar (TDEE): {int(tdee)} kalori")
+    kalori_bakar = tdee + 500  # Surplus kalori
+    st.write(f"Saran kalori yang harus dibakar untuk menambah massa otot: {int(kalori_bakar)} kalori per hari")
+    st.write("Saran aktivitas: Fokus pada latihan kekuatan (strength training) dan makan lebih banyak kalori yang sehat.")
