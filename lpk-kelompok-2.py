@@ -56,27 +56,27 @@ elif tujuan_diet == "Menambah Massa Otot":
 
 # Menampilkan hasil
 st.header("Hasil Perhitungan Kalori")
-st.write(f"BMR: {round(bmr)} kalori/hari")
-st.write(f"TDEE: {round(tdee)} kalori/hari")
-st.write(f"Kalori yang disarankan untuk diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
+st.write(f"BMR: {int(bmr)} kalori/hari")
+st.write(f"TDEE: {int(tdee)} kalori/hari")
+st.write(f"Kalori yang disarankan untuk diet '{tujuan_diet}': {int(kalori_target)} kalori/hari")
 
 # Input makanan yang dikonsumsi
 st.header("Masukkan Data Makanan yang Dikonsumsi")
-karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=0.1)
-protein = st.number_input("Protein (gram):", min_value=0.0, value=0.0, step=0.1)
-lemak = st.number_input("Lemak (gram):", min_value=0.0, value=0.0, step=0.1)
+karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=1)
+protein = st.number_input("Protein (gram):", min_value=0.0, value=0.0, step=1)
+lemak = st.number_input("Lemak (gram):", min_value=0.0, value=0.0, step=1)
 
 # Perhitungan kalori dari makanan yang dikonsumsi
 kalori_makanan = karbohidrat * 4 + protein * 4 + lemak * 9
 
 # Menampilkan hasil perhitungan kalori makanan
 st.header("Kalori yang Dikonsumsi dari Makanan")
-st.write(f"Karbohidrat: {karbohidrat * 4} kalori")
-st.write(f"Protein: {protein * 4} kalori")
-st.write(f"Lemak: {lemak * 9} kalori")
-st.write(f"Total kalori dari makanan: {round(kalori_makanan)} kalori")
+st.write(f"Karbohidrat: {int(karbohidrat * 4)} kalori")
+st.write(f"Protein: {int(protein * 4)} kalori")
+st.write(f"Lemak: {int(lemak * 9)} kalori")
+st.write(f"Total kalori dari makanan: {int(kalori_makanan)} kalori")
 
 # Perbandingan kalori
 st.header("Perbandingan Kalori Masuk dan Dibakar")
-st.write(f"Kalori Masuk: {round(kalori_makanan)} kalori")
-st.write(f"Kalori Dibakar (TDEE): {round(tdee)} kalori")
+st.write(f"Kalori Masuk: {int(kalori_makanan)} kalori")
+st.write(f"Kalori Dibakar (TDEE): {int(tdee)} kalori")
