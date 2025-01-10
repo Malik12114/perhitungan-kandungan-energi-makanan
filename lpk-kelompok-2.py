@@ -1,14 +1,12 @@
 import streamlit as st
 import pandas as pd
-import altair as alt
-import numpy as np
 
 # Judul aplikasi
-st.title("Kalkulator Diet dan Kandungan Energi Makanan")
+st.title("Kalkulator Diet dan Pembakaran Kalori Harian")
 
 # Deskripsi aplikasi
 st.markdown("""
-Aplikasi ini akan membantu Anda menghitung kebutuhan kalori harian untuk diet, serta kandungan energi dari makanan yang Anda konsumsi.
+Aplikasi ini membantu Anda untuk menghitung kalori yang harus dikonsumsi dan dibakar setiap harinya berdasarkan data pribadi, tingkat aktivitas fisik, dan tujuan diet Anda.
 """)
 
 # Input pengguna untuk berat badan, tinggi badan, usia, dan tingkat aktivitas
@@ -60,6 +58,12 @@ if tujuan_diet == "Menurunkan Berat Badan":
 elif tujuan_diet == "Menambah Massa Otot":
     kalori_target += 500  # Surplus kalori untuk penambahan massa otot (500 kalori surplus)
 
+# Menampilkan hasil perhitungan diet
+st.header("Hasil Perhitungan Diet")
+st.write(f"BMR (Basal Metabolic Rate): {round(bmr)} kalori/hari")
+st.write(f"TDEE (Total Daily Energy Expenditure): {round(tdee)} kalori/hari")
+st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
+
 # Input makanan yang dikonsumsi
 st.header("Masukkan Data Berat Makanan Yang Anda Konsumsi")
 karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0.0, value=0.0, step=0.1)
@@ -76,73 +80,36 @@ def hitung_kalori(karbo, prot, lemak):
 
 energi_karbo, energi_protein, energi_lemak, total_energi = hitung_kalori(karbohidrat, protein, lemak)
 
-# Gabungkan semua hasil perhitungan dalam satu tabel (bulatkan hasil ke bilangan bulat)
-data = {
-    "Komponen": [
-        "BMR (Basal Metabolic Rate)", 
-        "TDEE (Total Daily Energy Expenditure)", 
-        "Kalori Target (Diet)", 
-        "Karbohidrat", 
-        "Protein", 
-        "Lemak", 
-        "Total Energi Makanan"
-    ],
-    "Hasil Perhitungan (kkal)": [
-        round(bmr), 
-        round(tdee), 
-        round(kalori_target), 
-        round(energi_karbo), 
-        round(energi_protein), 
-        round(energi_lemak), 
-        round(total_energi)
-    ]
-}
+# Menampilkan hasil perhitungan energi makanan
+st.header("Hasil Perhitungan Energi Makanan")
+st.write(f"Karbohidrat: {round(energi_karbo)} kalori")
+st.write(f"Protein: {round(energi_protein)} kalori")
+st.write(f"Lemak: {round(energi_lemak)} kalori")
+st.write(f"Total Energi Makanan: {round(total_energi)} kalori")
 
-df = pd.DataFrame(data)
+# Menghitung kalori yang masuk dan kalori yang harus dibakar
+kalori_masuk = total_energi
+kalori_dibakar = tdee
 
-# Menampilkan tabel hasil perhitungan diet dan energi makanan
-st.header("Tabel Hasil Perhitungan Diet dan Energi Makanan")
-st.dataframe(df)  # Tabel interaktif
+st.header("Perbandingan Kalori Masuk dan Kalori Dibakar")
+st.write(f"Kalori yang masuk (dari makanan yang dikonsumsi): {round(kalori_masuk)} kalori")
+st.write(f"Kalori yang dibakar (TDEE): {round(kalori_dibakar)} kalori")
 
-# Data diet untuk ditampilkan di bawah tabel energi makanan
-st.subheader("Tujuan Diet Anda: " + tujuan_diet)
-st.write(f"BMR (Basal Metabolic Rate): {round(bmr)} kalori/hari")
-st.write(f"TDEE (Total Daily Energy Expenditure): {round(tdee)} kalori/hari")
-st.write(f"Kalori harian yang disarankan untuk tujuan diet '{tujuan_diet}': {round(kalori_target)} kalori/hari")
+# Grafik Kalori Masuk vs Kalori Dibakar
+import altair as alt
 
-# Korelasi antara energi makanan yang dikonsumsi dan kalori target
-st.header("Analisis Korelasi Energi Makanan dan Kalori Target")
-
-# Menggunakan data dalam format yang benar untuk korelasi
-energi = np.array([energi_karbo, energi_protein, energi_lemak])  # Array satu dimensi untuk energi makanan
-kalori = np.array([kalori_target] * 3)  # Mengulang kalori target untuk setiap komponen energi
-
-# Korelasi antara energi makanan dan kalori target
-korelasi = np.corrcoef(energi, kalori)[0, 1]
-
-st.write(f"Korelasi antara Energi Makanan dan Kalori Target: {korelasi:.2f}")
-
-# Membuat grafik korelasi
-st.subheader("Grafik Korelasi Energi Makanan dan Kalori Target")
-
-# Membuat DataFrame untuk grafik
-data_korelasi = pd.DataFrame({
-    'Komponen': ['Karbohidrat', 'Protein', 'Lemak'],
-    'Energi Makanan (kkal)': [energi_karbo, energi_protein, energi_lemak],
-    'Kalori Target (kkal)': [kalori_target] * 3
+data = pd.DataFrame({
+    'Jenis': ['Kalori Masuk', 'Kalori Dibakar'],
+    'Kalori': [kalori_masuk, kalori_dibakar]
 })
 
-# Membuat scatter plot menggunakan Altair
-chart = alt.Chart(data_korelasi).mark_point().encode(
-    x='Energi Makanan (kkal)',
-    y='Kalori Target (kkal)',
-    color='Komponen',
-    tooltip=['Komponen', 'Energi Makanan (kkal)', 'Kalori Target (kkal)']
+chart = alt.Chart(data).mark_bar().encode(
+    x='Jenis',
+    y='Kalori'
 ).properties(
-    title="Korelasi Energi Makanan dan Kalori Target"
+    title='Perbandingan Kalori Masuk dan Kalori Dibakar'
 )
 
-# Menampilkan chart
 st.altair_chart(chart, use_container_width=True)
 
 # Footer
