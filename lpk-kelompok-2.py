@@ -40,7 +40,7 @@ if tujuan_diet == "Menurunkan Berat Badan":
 elif tujuan_diet == "Menambah Massa Otot":
     kalori_target += 500
 
-# Input makanan yang dikonsumsi
+# Input makanan yang dikonsumsi (default nilai 0)
 st.header("Masukkan Kalori Makanan Yang Anda Konsumsi")
 karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0, value=0, step=1)
 protein = st.number_input("Protein (gram):", min_value=0, value=0, step=1)
