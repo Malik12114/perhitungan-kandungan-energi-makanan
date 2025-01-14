@@ -31,12 +31,11 @@ with st.form("form_kalkulator"):
     submit = st.form_submit_button("Hitung")
 
 # Fungsi untuk menghitung BMR
-def hitung_bmr(berat, tinggi, usia, jenis_kelamin, rumus):
-    if rumus == "Mifflin-St Jeor":
-        if jenis_kelamin == "Pria":
-            return (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5
-        else:
-            return (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161
+def hitung_bmr(berat, tinggi, usia, jenis_kelamin):
+    if jenis_kelamin == "Pria":
+        return (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5
+    else:
+        return (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161
 
 # Faktor aktivitas
 aktivitas_faktor = {
@@ -51,7 +50,10 @@ aktivitas_faktor = {
 if satuan_berat == "Pounds":
     berat_badan = berat_badan * 0.453592  # Convert pounds to kg
 if satuan_tinggi == "ft/in":
-    tinggi_badan = tinggi_badan * 30.48  # Convert ft/in to cm
+    # Assuming input is in feet and inches
+    feet = int(tinggi_badan // 12)
+    inches = tinggi_badan % 12
+    tinggi_badan = (feet * 30.48) + (inches * 2.54)  # Convert ft/in to cm
 
 # Perhitungan jika tombol submit ditekan
 if submit:
