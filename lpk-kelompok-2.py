@@ -69,8 +69,26 @@ if submit:
     st.subheader("Hasil Perhitungan")
     st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} {satuan_hasil.lower()}/hari")
     st.write(f"**TDEE (Total Daily Energy Expenditure):** {int(tdee)} {satuan_hasil.lower()}/hari")
-    st.write("Gunakan nilai ini untuk menyesuaikan konsumsi kalori Anda sesuai tujuan diet.")
     
+    # Penjelasan hasil
+    st.write("### Penjelasan Hasil:")
+    st.write(
+        """
+        **BMR (Basal Metabolic Rate)** adalah jumlah kalori yang dibutuhkan tubuh Anda untuk menjalankan fungsi dasar 
+        seperti pernapasan, pencernaan, dan peredaran darah saat Anda tidak melakukan aktivitas fisik. 
+        Ini adalah jumlah kalori yang dibakar tubuh Anda hanya untuk bertahan hidup.
+        
+        **TDEE (Total Daily Energy Expenditure)** adalah jumlah kalori yang dibakar tubuh Anda dalam sehari 
+        berdasarkan tingkat aktivitas fisik Anda. Ini memperhitungkan kegiatan sehari-hari seperti berjalan, berolahraga, 
+        dan aktivitas lainnya.
+        
+        - Jika tujuan Anda adalah **menurunkan berat badan**, Anda harus mengonsumsi kalori lebih sedikit dari TDEE.
+        - Jika tujuan Anda adalah **menambah berat badan**, Anda perlu mengonsumsi lebih banyak kalori dari TDEE.
+        - Jika tujuan Anda adalah **menjaga berat badan**, cobalah untuk mengonsumsi kalori yang seimbang dengan TDEE Anda.
+        """
+    )
+    st.write("Gunakan nilai ini untuk menyesuaikan konsumsi kalori Anda sesuai tujuan diet.")
+
 # Footer
 st.write("---")
 st.caption("Dibuat oleh [kelompok 2 kelas 2G Nanoteknologi Pangan], dengan rumus Mifflin-St Jeor")
