@@ -5,7 +5,7 @@ st.title("Kalkulator Kalori")
 
 # Deskripsi aplikasi
 st.write(
-    "Kalkulator ini dapat menghitung kalori yang perlu Anda konsumsi. "
+    "Kalkulator ini dapat menghitung kalori yang perlu Anda konsumsi.& "
     "Masukan data dibawah ini untuk mendapatkan jumlah kalori dan dapat memperhitungkan rencana diet anda."
 )
 
