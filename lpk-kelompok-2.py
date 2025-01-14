@@ -15,7 +15,7 @@ with st.form("form_kalkulator"):
     
     col1, col2 = st.columns(2)
     with col1:
-        berat_badan = st.number_input("Berat Badan", min_value=0, value=0, step=1)
+        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0, value=0, step=1)
         satuan_berat = st.selectbox(" ", ["Kg", "Pounds"])
     with col2:
         tinggi_badan = st.number_input("Tinggi Badan", min_value=0, value=0, step=1)
@@ -74,17 +74,36 @@ if submit:
     with st.expander("Klik untuk penjelasan lebih lanjut"):
         st.write(
             """
-            **BMR (Basal Metabolic Rate)** adalah jumlah kalori yang dibutuhkan tubuh Anda untuk menjalankan fungsi dasar 
-            seperti pernapasan, pencernaan, dan peredaran darah saat Anda tidak melakukan aktivitas fisik. 
-            Ini adalah jumlah kalori yang dibakar tubuh Anda hanya untuk bertahan hidup.
+            ### Apa itu BMR dan TDEE?
             
-            **TDEE (Total Daily Energy Expenditure)** adalah jumlah kalori yang dibakar tubuh Anda dalam sehari 
-            berdasarkan tingkat aktivitas fisik Anda. Ini memperhitungkan kegiatan sehari-hari seperti berjalan, berolahraga, 
+            **BMR (Basal Metabolic Rate)** adalah jumlah kalori yang dibutuhkan tubuh Anda untuk menjalankan fungsi dasar, 
+            seperti pernapasan, pencernaan, dan peredaran darah, saat Anda tidak melakukan aktivitas fisik. 
+            BMR menunjukkan jumlah kalori yang dibakar tubuh Anda hanya untuk bertahan hidup.
+
+            **TDEE (Total Daily Energy Expenditure)** adalah jumlah kalori yang dibakar tubuh Anda dalam sehari, 
+            yang mencakup tingkat aktivitas fisik Anda. TDEE memperhitungkan semua kegiatan, seperti berjalan, berolahraga, 
             dan aktivitas lainnya.
+
+            ### Bagaimana Menggunakan Hasil Perhitungan?
             
-            - Jika tujuan Anda adalah **menurunkan berat badan**, Anda harus mengonsumsi kalori lebih sedikit dari TDEE.
-            - Jika tujuan Anda adalah **menambah berat badan**, Anda perlu mengonsumsi lebih banyak kalori dari TDEE.
-            - Jika tujuan Anda adalah **menjaga berat badan**, cobalah untuk mengonsumsi kalori yang seimbang dengan TDEE Anda.
+            - **Jika tujuan Anda adalah menurunkan berat badan:**
+              - Anda perlu mengonsumsi kalori lebih sedikit dari TDEE untuk menciptakan defisit kalori.
+              - Sebaiknya lakukan defisit kalori sekitar 10-20% dari TDEE untuk hasil yang sehat.
+            
+            - **Jika tujuan Anda adalah menambah berat badan:**
+              - Anda perlu mengonsumsi lebih banyak kalori dari TDEE untuk menciptakan surplus kalori.
+              - Sebaiknya lakukan surplus kalori sekitar 10-20% dari TDEE untuk pertumbuhan yang optimal.
+            
+            - **Jika tujuan Anda adalah menjaga berat badan:**
+              - Anda harus mengonsumsi kalori yang seimbang dengan TDEE Anda.
+              - Ini akan membantu Anda mempertahankan berat badan yang stabil.
+
+            ### Contoh:
+            
+            - Jika BMR Anda adalah 1500 kalori, dan TDEE Anda adalah 2000 kalori:
+              - **Menurunkan berat badan:** Konsumsi sekitar 1600-1800 kalori per hari.
+              - **Menambah berat badan:** Konsumsi sekitar 2200-2400 kalori per hari.
+              - **Menjaga berat badan:** Konsumsi sekitar 2000 kalori per hari.
             """
         )
     st.write("Gunakan nilai ini untuk menyesuaikan konsumsi kalori Anda sesuai tujuan diet.")
