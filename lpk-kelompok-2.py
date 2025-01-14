@@ -38,15 +38,6 @@ def hitung_bmr(berat, tinggi, usia, jenis_kelamin, rumus):
             return (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5
         else:
             return (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161
-    elif rumus == "Revised Harris-Benedict":
-        if jenis_kelamin == "Pria":
-            return 88.362 + (13.397 * berat) + (4.799 * tinggi) - (5.677 * usia)
-        else:
-            return 447.593 + (9.247 * berat) + (3.098 * tinggi) - (4.330 * usia)
-    elif rumus == "Katch-McArdle":
-        # Untuk Katch-McArdle, massa tubuh tanpa lemak diperlukan (mengasumsikan 15% body fat)
-        lean_body_mass = berat * 0.85  # 15% body fat
-        return 370 + (21.6 * lean_body_mass)
 
 # Faktor aktivitas
 aktivitas_faktor = {
