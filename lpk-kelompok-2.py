@@ -55,7 +55,7 @@ if satuan_tinggi == "ft/in":
 
 # Perhitungan jika tombol submit ditekan
 if submit:
-    bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin, rumus)
+    bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
     tdee = bmr * aktivitas_faktor[aktivitas]
     
     # Konversi hasil ke kilojoule jika dipilih
