@@ -81,4 +81,4 @@ if submit:
     
 # Footer
 st.write("---")
-st.caption("Dibuat oleh [kelompok 2 kelas 2G Nanoteknologi Pangan] dengan rumus Mifflin-St Jeor")
+st.caption("Dibuat oleh [kelompok 2 kelas 2G Nanoteknologi Pangan], dengan rumus Mifflin-St Jeor")
