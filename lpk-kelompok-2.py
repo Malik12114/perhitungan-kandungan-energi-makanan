@@ -12,7 +12,6 @@ st.write(
 with st.form("form_kalkulator"):
     usia = st.number_input("Usia", min_value=0, value=0, step=1)
     jenis_kelamin = st.selectbox("Jenis kelamin", ["Pria", "Wanita"])
-    rumus = st.selectbox("Rumus", ["Revised Harris-Benedict", "Mifflin-St Jeor", "Katch-McArdle"])
     
     col1, col2 = st.columns(2)
     with col1:
