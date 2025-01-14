@@ -1,31 +1,55 @@
 import streamlit as st
 
 # Judul aplikasi
-st.title("Kalkulator Kalori Harian (Rumus Mifflin-St Jeor)")
+st.title("Kalkulator Kalori")
 
-# Penjelasan aplikasi
-st.write("""
-Aplikasi ini menggunakan rumus **Mifflin-St Jeor** untuk menghitung kebutuhan kalori harian Anda berdasarkan berat badan, tinggi badan, usia, dan tingkat aktivitas fisik.
-""")
-
-# Input data pengguna
-usia = st.number_input("Usia (tahun):", min_value=0, value=0, step=1)
-jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
-berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=0, step=1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=0, step=1)
-aktivitas = st.selectbox(
-    "Tingkat Aktivitas Fisik:",
-    ["Tidak banyak bergerak", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"]
+# Deskripsi aplikasi
+st.write(
+    "Kalkulator kalori ini menghitung kalori yang perlu Anda konsumsi sehubungan dengan tujuan kesehatan dan kebugaran Anda termasuk pemeliharaan berat badan, penurunan berat badan, dan penambahan otot. "
+    "Dapatkan jumlah kalori dan masukkan ke dalam rencana diet Anda dengan mempertimbangkan berat badan Anda saat ini."
 )
 
-# Rumus Mifflin-St Jeor
-def hitung_bmr_mifflin(berat, tinggi, usia, jenis_kelamin):
-    if jenis_kelamin == "Pria":
-        return (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5
-    else:
-        return (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161
+# Form input data pengguna
+with st.form("form_kalkulator"):
+    usia = st.number_input("Usia", min_value=0, value=20, step=1)
+    jenis_kelamin = st.selectbox("Jenis kelamin", ["Pria", "Wanita"])
+    rumus = st.selectbox("Rumus", ["Revised Harris-Benedict", "Mifflin-St Jeor", "Katch-McArdle"])
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0, value=54, step=1)
+        satuan_berat = st.selectbox(" ", ["Kg", "Pounds"])
+    with col2:
+        tinggi_badan = st.number_input("Ketinggian", min_value=0, value=165, step=1)
+        satuan_tinggi = st.selectbox(" ", ["cm", "ft/in"])
+    
+    aktivitas = st.selectbox(
+        "Pilih Level Aktivitas",
+        ["Tidak banyak bergerak", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"]
+    )
+    satuan_hasil = st.selectbox("Satuan Hasil", ["Kalori", "Kilojoule"])
+    
+    # Tombol submit
+    submit = st.form_submit_button("Hitung")
 
-# Faktor aktivitas fisik
+# Fungsi untuk menghitung BMR
+def hitung_bmr(berat, tinggi, usia, jenis_kelamin, rumus):
+    if rumus == "Mifflin-St Jeor":
+        if jenis_kelamin == "Pria":
+            return (10 * berat) + (6.25 * tinggi) - (5 * usia) + 5
+        else:
+            return (10 * berat) + (6.25 * tinggi) - (5 * usia) - 161
+    elif rumus == "Revised Harris-Benedict":
+        if jenis_kelamin == "Pria":
+            return 88.362 + (13.397 * berat) + (4.799 * tinggi) - (5.677 * usia)
+        else:
+            return 447.593 + (9.247 * berat) + (3.098 * tinggi) - (4.330 * usia)
+    elif rumus == "Katch-McArdle":
+        # Untuk Katch-McArdle, massa tubuh tanpa lemak diperlukan (mengasumsikan 15% body fat)
+        lean_body_mass = berat * 0.85  # 15% body fat
+        return 370 + (21.6 * lean_body_mass)
+
+# Faktor aktivitas
 aktivitas_faktor = {
     "Tidak banyak bergerak": 1.2,
     "Aktif ringan": 1.375,
@@ -34,33 +58,24 @@ aktivitas_faktor = {
     "Sangat aktif": 1.9
 }
 
-# Hitung BMR dan TDEE
-bmr = hitung_bmr_mifflin(berat_badan, tinggi_badan, usia, jenis_kelamin)
-tdee = bmr * aktivitas_faktor[aktivitas]
+# Konversi satuan berat dan tinggi jika diperlukan
+if satuan_berat == "Pounds":
+    berat_badan = berat_badan * 0.453592  # Convert pounds to kg
+if satuan_tinggi == "ft/in":
+    tinggi_badan = tinggi_badan * 30.48  # Convert ft/in to cm
 
-# Tujuan diet
-tujuan_diet = st.selectbox("Tujuan Diet:", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Berat Badan"])
-
-# Sesuaikan kalori berdasarkan tujuan diet
-kalori_target = tdee
-if tujuan_diet == "Menurunkan Berat Badan":
-    kalori_target -= 500
-elif tujuan_diet == "Menambah Berat Badan":
-    kalori_target += 500
-
-# Hasil perhitungan
-st.subheader("Hasil Perhitungan Kalori Harian")
-st.write(f"BMR (Basal Metabolic Rate): {int(bmr)} kalori/hari")
-st.write(f"TDEE (Total Daily Energy Expenditure): {int(tdee)} kalori/hari")
-st.write(f"Kalori yang disarankan untuk tujuan '{tujuan_diet}': {int(kalori_target)} kalori/hari")
-
-# Saran aktivitas fisik atau konsumsi
-st.subheader("Saran Diet dan Aktivitas")
-if tujuan_diet == "Menurunkan Berat Badan":
-    st.write(f"Kurangi asupan kalori harian sebesar 500 kalori dari kebutuhan TDEE Anda ({int(tdee)} kalori/hari).")
-    st.write("Disarankan untuk meningkatkan aktivitas fisik seperti olahraga rutin.")
-elif tujuan_diet == "Menambah Berat Badan":
-    st.write(f"Tambahkan asupan kalori harian sebesar 500 kalori dari kebutuhan TDEE Anda ({int(tdee)} kalori/hari).")
-    st.write("Konsumsilah makanan tinggi kalori seperti protein dan karbohidrat kompleks.")
-else:
-    st.write("Anda berada pada keseimbangan kalori. Pertahankan pola makan dan aktivitas fisik Anda.")
+# Perhitungan jika tombol submit ditekan
+if submit:
+    bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin, rumus)
+    tdee = bmr * aktivitas_faktor[aktivitas]
+    
+    # Konversi hasil ke kilojoule jika dipilih
+    if satuan_hasil == "Kilojoule":
+        bmr = bmr * 4.184
+        tdee = tdee * 4.184
+    
+    # Tampilkan hasil
+    st.subheader("Hasil Perhitungan")
+    st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} {satuan_hasil.lower()}/hari")
+    st.write(f"**TDEE (Total Daily Energy Expenditure):** {int(tdee)} {satuan_hasil.lower()}/hari")
+    st.write("Gunakan nilai ini untuk menyesuaikan konsumsi kalori Anda sesuai tujuan diet.")
