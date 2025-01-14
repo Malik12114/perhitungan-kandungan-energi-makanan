@@ -1,74 +1,37 @@
 import streamlit as st
 
 # Judul aplikasi
-st.title("Kalkulator Kalori dan Diet Harian")
+st.title("Kalkulator Kalori")
 
-# Input data pengguna
-berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=0, step=1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=0, step=1)
-usia = st.number_input("Usia (tahun):", min_value=0, value=0, step=1)
-jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
-aktivitas = st.selectbox("Tingkat Aktivitas Fisik:", ["Tidak aktif", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"])
+# Deskripsi aplikasi
+st.write(
+    "Kalkulator kalori ini menghitung kalori yang perlu Anda konsumsi sehubungan dengan tujuan kesehatan dan kebugaran Anda termasuk pemeliharaan berat badan, penurunan berat badan, dan penambahan otot. "
+    "Dapatkan jumlah kalori dan masukkan ke dalam rencana diet Anda dengan mempertimbangkan berat badan Anda saat ini."
+)
 
-# Rumus BMR (Basal Metabolic Rate) Harris-Benedict
-def hitung_bmr(berat, tinggi, usia, jenis_kelamin):
-    if jenis_kelamin == "Pria":
-        return 66 + (13.7 * berat) + (5 * tinggi) - (6.8 * usia)
-    else:
-        return 655 + (9.6 * berat) + (1.8 * tinggi) - (4.7 * usia)
+# Form input data pengguna
+with st.form("form_kalkulator"):
+    usia = st.number_input("Usia", min_value=0, value=20, step=1)
+    jenis_kelamin = st.selectbox("Jenis kelamin", ["Jantan", "Betina"])
+    rumus = st.selectbox("Rumus", ["Revised Harris-Benedict", "Mifflin-St Jeor", "Katch-McArdle"])
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0, value=54, step=1)
+        satuan_berat = st.selectbox(" ", ["Kg", "Pounds"])
+    with col2:
+        tinggi_badan = st.number_input("Ketinggian", min_value=0, value=9, step=1)
+        satuan_tinggi = st.selectbox(" ", ["cm", "ft/in"])
+    
+    aktivitas = st.selectbox(
+        "Pilih Level Aktivitas",
+        ["Tidak banyak bergerak", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"]
+    )
+    satuan_hasil = st.selectbox("Satuan Hasil", ["Kalori", "Kilojoule"])
+    
+    # Tombol submit
+    submit = st.form_submit_button("Hitung")
 
-# Faktor aktivitas fisik
-aktivitas_faktor = {
-    "Tidak aktif": 1.2,
-    "Aktif ringan": 1.375,
-    "Aktif sedang": 1.55,
-    "Aktif berat": 1.725,
-    "Sangat aktif": 1.9
-}
-
-# Hitung BMR dan TDEE
-bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
-tdee = bmr * aktivitas_faktor[aktivitas]
-
-# Pilihan tujuan diet
-tujuan_diet = st.selectbox("Tujuan Diet:", ["Menurunkan Berat Badan", "Menjaga Berat Badan", "Menambah Massa Otot"])
-
-# Sesuaikan kalori berdasarkan tujuan diet
-kalori_target = tdee
-if tujuan_diet == "Menurunkan Berat Badan":
-    kalori_target -= 500
-elif tujuan_diet == "Menambah Massa Otot":
-    kalori_target += 500
-
-# Input makanan yang dikonsumsi
-st.header("Masukkan Kalori Makanan Yang Anda Konsumsi")
-karbohidrat = st.number_input("Karbohidrat (gram):", min_value=0, value=0, step=1)
-protein = st.number_input("Protein (gram):", min_value=0, value=0, step=1)
-lemak = st.number_input("Lemak (gram):", min_value=0, value=0, step=1)
-
-# Menghitung kalori yang dikonsumsi
-kalori_karbo = karbohidrat * 4
-kalori_protein = protein * 4
-kalori_lemak = lemak * 9
-kalori_makanan = kalori_karbo + kalori_protein + kalori_lemak
-
-# Menampilkan hasil perhitungan kalori yang dikonsumsi
-st.subheader("Hasil Kalori yang Dikonsumsi")
-st.write(f"Kalori dari Karbohidrat: {int(kalori_karbo)} kalori")
-st.write(f"Kalori dari Protein: {int(kalori_protein)} kalori")
-st.write(f"Kalori dari Lemak: {int(kalori_lemak)} kalori")
-st.write(f"Total Kalori yang Dikonsumsi: {int(kalori_makanan)} kalori")
-
-# Menampilkan hasil perhitungan kalori harian
-st.subheader("Hasil Perhitungan Kalori Harian")
-st.write(f"BMR: {int(bmr)} kalori/hari")
-st.write(f"TDEE: {int(tdee)} kalori/hari")
-st.write(f"Kalori yang disarankan untuk tujuan diet '{tujuan_diet}': {int(kalori_target)} kalori/hari")
-
-# Saran pengurangan kalori
-st.subheader("Saran Pengurangan Kalori")
-kalori_dikurangi = kalori_makanan - kalori_target
-if kalori_dikurangi > 0:
-    st.write(f"Untuk mencapai tujuan diet Anda, kurangi asupan sekitar {int(kalori_dikurangi)} kalori per hari.")
-else:
-    st.write("Kalori yang Anda konsumsi sudah sesuai dengan tujuan diet Anda.")
+# Hasil output jika tombol submit ditekan
+if submit:
+    st.write("Hasil perhitungan akan muncul di sini. (Fitur perhitungan bisa ditambahkan sesuai rumus pilihan.)")
