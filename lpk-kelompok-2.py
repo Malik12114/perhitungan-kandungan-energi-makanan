@@ -18,7 +18,7 @@ with st.form("form_kalkulator"):
         berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0, value=0, step=1)
         satuan_berat = st.selectbox(" ", ["Kg", "Pounds"])
     with col2:
-        tinggi_badan = st.number_input("Ketinggian", min_value=0, value=0, step=1)
+        tinggi_badan = st.number_input("Tinggi Badan", min_value=0, value=0, step=1)
         satuan_tinggi = st.selectbox(" ", ["cm", "ft/in"])
     
     aktivitas = st.selectbox(
