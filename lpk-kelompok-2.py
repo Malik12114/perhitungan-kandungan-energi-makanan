@@ -5,7 +5,7 @@ st.title("Kalkulator Kalori")
 
 # Deskripsi aplikasi
 st.write(
-    "Kalkulator kalori ini menghitung kalori yang perlu Anda konsumsi sehubungan dengan tujuan kesehatan dan kebugaran Anda termasuk pemeliharaan berat badan, penurunan berat badan, dan penambahan otot. "
+    "Kalkulator ini dapat menghitung kalori yang perlu Anda konsumsi."
     "Dapatkan jumlah kalori dan masukkan ke dalam rencana diet Anda dengan mempertimbangkan berat badan Anda saat ini."
 )
 
