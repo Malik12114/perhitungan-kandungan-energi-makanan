@@ -100,10 +100,16 @@ if submit:
 
             ### Contoh:
             
-            - Jika BMR Anda adalah 1500 kalori, dan TDEE Anda adalah 2000 kalori:
-              - **Menurunkan berat badan:** Konsumsi sekitar 1600-1800 kalori per hari.
-              - **Menambah berat badan:** Konsumsi sekitar 2200-2400 kalori per hari.
-              - **Menjaga berat badan:** Konsumsi sekitar 2000 kalori per hari.
+            - Jika BMR Anda adalah **{int(bmr)} {satuan_hasil.lower()}** dan TDEE Anda adalah **{int(tdee)} {satuan_hasil.lower()}**, berikut adalah cara Anda dapat menyesuaikan konsumsi kalori sesuai tujuan diet:
+            
+            - **Menurunkan berat badan:**
+              - Konsumsi sekitar **{int(tdee - tdee * 0.1)} - {int(tdee - tdee * 0.2)} {satuan_hasil.lower()}/hari** untuk menciptakan defisit kalori.
+            
+            - **Menambah berat badan:**
+              - Konsumsi sekitar **{int(tdee + tdee * 0.1)} - {int(tdee + tdee * 0.2)} {satuan_hasil.lower()}/hari** untuk menciptakan surplus kalori.
+            
+            - **Menjaga berat badan:**
+              - Konsumsi sekitar **{int(tdee)} {satuan_hasil.lower()}/hari** untuk mempertahankan berat badan Anda.
             """
         )
     st.write("Gunakan nilai ini untuk menyesuaikan konsumsi kalori Anda sesuai tujuan diet.")
