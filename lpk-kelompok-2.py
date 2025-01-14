@@ -4,9 +4,9 @@ import streamlit as st
 st.title("Kalkulator Kalori dan Diet Harian")
 
 # Input data pengguna
-berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=60, step=1)
-tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=165, step=1)
-usia = st.number_input("Usia (tahun):", min_value=0, value=30, step=1)
+berat_badan = st.number_input("Berat Badan (kg):", min_value=0, value=, step=1)
+tinggi_badan = st.number_input("Tinggi Badan (cm):", min_value=0, value=, step=1)
+usia = st.number_input("Usia (tahun):", min_value=0, value=, step=1)
 jenis_kelamin = st.selectbox("Jenis Kelamin:", ["Pria", "Wanita"])
 aktivitas = st.selectbox("Tingkat Aktivitas Fisik:", ["Tidak aktif", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"])
 
