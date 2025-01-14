@@ -78,3 +78,7 @@ if submit:
     st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} {satuan_hasil.lower()}/hari")
     st.write(f"**TDEE (Total Daily Energy Expenditure):** {int(tdee)} {satuan_hasil.lower()}/hari")
     st.write("Gunakan nilai ini untuk menyesuaikan konsumsi kalori Anda sesuai tujuan diet.")
+    
+# Footer
+st.write("---")
+st.caption("Dibuat oleh [kelompok 2 kelas 2G Nanoteknologi Pangan] dengan rumus Mifflin-St Jeor")
