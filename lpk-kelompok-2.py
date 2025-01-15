@@ -5,7 +5,7 @@ st.title("Kalkulator Kalori")
 
 # Deskripsi aplikasi
 st.write(
-    "Masukan data dibawah ini untuk mendapatkan jumlah kalori dan dapat memperhitungkan penyesuain kebutuhan kalori anda."
+    "Masukkan data di bawah ini untuk mendapatkan jumlah kalori dan memperhitungkan kebutuhan kalori Anda."
 )
 
 # Form input data pengguna
@@ -15,17 +15,16 @@ with st.form("form_kalkulator"):
     
     col1, col2 = st.columns(2)
     with col1:
-        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0, value=0, step=1)
-        satuan_berat = st.selectbox(" ", ["Kg", "Pounds"])
+        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0.0, value=0.0, step=0.1)
+        satuan_berat = st.selectbox("Satuan Berat", ["Kg", "Pounds"])
     with col2:
-        tinggi_badan = st.number_input("Tinggi Badan", min_value=0, value=0, step=1)
-        satuan_tinggi = st.selectbox(" ", ["cm", "ft/in"])
+        tinggi_badan = st.number_input("Tinggi Badan", min_value=0.0, value=0.0, step=0.1)
+        satuan_tinggi = st.selectbox("Satuan Tinggi", ["cm", "ft/in"])
     
     aktivitas = st.selectbox(
         "Aktivitas Kegiatan",
         ["Tidak banyak bergerak", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"]
     )
-    satuan_hasil = ("Satuan Hasil", ["Kalori"])
     
     # Tombol submit
     submit = st.form_submit_button("Hitung")
@@ -50,25 +49,17 @@ aktivitas_faktor = {
 if satuan_berat == "Pounds":
     berat_badan = berat_badan * 0.453592  # Convert pounds to kg
 if satuan_tinggi == "ft/in":
-    # Assuming input is in feet and inches
-    feet = int(tinggi_badan // 12)
-    inches = tinggi_badan % 12
-    tinggi_badan = (feet * 30.48) + (inches * 2.54)  # Convert ft/in to cm
+    tinggi_badan = tinggi_badan * 30.48  # Convert feet to cm
 
 # Perhitungan jika tombol submit ditekan
 if submit:
     bmr = hitung_bmr(berat_badan, tinggi_badan, usia, jenis_kelamin)
     tdee = bmr * aktivitas_faktor[aktivitas]
     
-    # Konversi hasil ke kilojoule jika dipilih
-    if satuan_hasil == "Kilojoule":
-        bmr = bmr * 4.184
-        tdee = tdee * 4.184
-    
     # Tampilkan hasil
     st.subheader("Hasil Perhitungan")
-    st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} {satuan_hasil.()}/hari")
-    st.write(f"**TDEE (Total Daily Energy Expenditure):** {int(tdee)} {satuan_hasil.lower()}/hari")
+    st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} kalori/hari")
+    st.write(f"**TDEE (Total Daily Energy Expenditure):** {int(tdee)} kalori/hari")
     
     # Penjelasan hasil dalam bentuk opsional (expandable)
     with st.expander("Klik untuk penjelasan lebih lanjut"):
