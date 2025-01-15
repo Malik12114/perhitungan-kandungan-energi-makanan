@@ -5,7 +5,7 @@ st.title("Kalkulator Kalori")
 
 # Deskripsi aplikasi
 st.write(
-    "Masukan data dibawah ini untuk mendapatkan jumlah kalori dan dapat memperhitungkan rencana diet anda."
+    "Masukan data dibawah ini untuk mendapatkan jumlah kalori dan dapat memperhitungkan penyesuain kebutuhan kalori anda."
 )
 
 # Form input data pengguna
@@ -22,7 +22,7 @@ with st.form("form_kalkulator"):
         satuan_tinggi = st.selectbox(" ", ["cm", "ft/in"])
     
     aktivitas = st.selectbox(
-        "Pilih Level Aktivitas",
+        "Aktivitas Kegiatan",
         ["Tidak banyak bergerak", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"]
     )
     satuan_hasil = st.selectbox("Satuan Hasil", ["Kalori", "Kilojoule"])
