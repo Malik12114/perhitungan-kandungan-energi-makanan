@@ -15,10 +15,10 @@ with st.form("form_kalkulator"):
     
     col1, col2 = st.columns(2)
     with col1:
-        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0.0, value=0.0, step=0.1)
+        berat_badan = st.number_input("Berat Badan Saat Ini", min_value=0, value=0, step=1)
         satuan_berat = st.selectbox("Satuan Berat", ["Kg", "Pounds"])
     with col2:
-        tinggi_badan = st.number_input("Tinggi Badan", min_value=0.0, value=0.0, step=0.1)
+        tinggi_badan = st.number_input("Tinggi Badan", min_value=0, value=0, step=1)
         satuan_tinggi = st.selectbox("Satuan Tinggi", ["cm", "ft/in"])
     
     aktivitas = st.selectbox(
