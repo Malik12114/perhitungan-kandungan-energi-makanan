@@ -25,7 +25,7 @@ with st.form("form_kalkulator"):
         "Aktivitas Kegiatan",
         ["Tidak banyak bergerak", "Aktif ringan", "Aktif sedang", "Aktif berat", "Sangat aktif"]
     )
-    satuan_hasil = st.selectbox("Satuan Hasil", ["Kalori", "Kilojoule"])
+    satuan_hasil = ("Satuan Hasil", ["Kalori"])
     
     # Tombol submit
     submit = st.form_submit_button("Hitung")
