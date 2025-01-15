@@ -67,7 +67,7 @@ if submit:
     
     # Tampilkan hasil
     st.subheader("Hasil Perhitungan")
-    st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} {satuan_hasil.lower()}/hari")
+    st.write(f"**BMR (Basal Metabolic Rate):** {int(bmr)} {satuan_hasil.()}/hari")
     st.write(f"**TDEE (Total Daily Energy Expenditure):** {int(tdee)} {satuan_hasil.lower()}/hari")
     
     # Penjelasan hasil dalam bentuk opsional (expandable)
