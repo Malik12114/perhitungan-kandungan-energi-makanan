@@ -107,10 +107,6 @@ if submit:
             **TDEE (Total Daily Energy Expenditure)** adalah jumlah kalori yang dibakar tubuh Anda dalam sehari 
             berdasarkan tingkat aktivitas fisik Anda. Ini memperhitungkan kegiatan sehari-hari seperti berjalan, berolahraga, 
             dan aktivitas lainnya.
-            
-            - Jika tujuan Anda adalah **menurunkan berat badan**, Anda harus mengonsumsi kalori lebih sedikit dari TDEE.
-            - Jika tujuan Anda adalah **menambah berat badan**, Anda perlu mengonsumsi lebih banyak kalori dari TDEE.
-            - Jika tujuan Anda adalah **menjaga berat badan**, cobalah untuk mengonsumsi kalori yang seimbang dengan TDEE Anda.
             """
         )
 
